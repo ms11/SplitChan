@@ -1,4 +1,4 @@
 obj
 bin
-build.zip
+*.zip
 *.suo
