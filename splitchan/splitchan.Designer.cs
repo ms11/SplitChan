@@ -28,11 +28,12 @@
             this.sound_drop = new System.Windows.Forms.Button();
             this.img_drop = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.extract = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // tag_name
             // 
-            this.tag_name.Location = new System.Drawing.Point(12, 133);
+            this.tag_name.Location = new System.Drawing.Point(12, 141);
             this.tag_name.Name = "tag_name";
             this.tag_name.Size = new System.Drawing.Size(100, 20);
             this.tag_name.TabIndex = 3;
@@ -42,7 +43,7 @@
             // 
             // save_btn
             // 
-            this.save_btn.Location = new System.Drawing.Point(118, 131);
+            this.save_btn.Location = new System.Drawing.Point(118, 139);
             this.save_btn.Name = "save_btn";
             this.save_btn.Size = new System.Drawing.Size(100, 23);
             this.save_btn.TabIndex = 4;
@@ -53,7 +54,7 @@
             // sound_drop
             // 
             this.sound_drop.AllowDrop = true;
-            this.sound_drop.Location = new System.Drawing.Point(12, 25);
+            this.sound_drop.Location = new System.Drawing.Point(12, 33);
             this.sound_drop.Name = "sound_drop";
             this.sound_drop.Size = new System.Drawing.Size(100, 100);
             this.sound_drop.TabIndex = 1;
@@ -66,7 +67,7 @@
             // img_drop
             // 
             this.img_drop.AllowDrop = true;
-            this.img_drop.Location = new System.Drawing.Point(118, 25);
+            this.img_drop.Location = new System.Drawing.Point(118, 33);
             this.img_drop.Name = "img_drop";
             this.img_drop.Size = new System.Drawing.Size(100, 100);
             this.img_drop.TabIndex = 2;
@@ -79,18 +80,29 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Location = new System.Drawing.Point(13, 12);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(119, 13);
             this.label1.TabIndex = 4;
             this.label1.Text = "Drag & Drop works too";
             this.label1.UseMnemonic = false;
             // 
+            // extract
+            // 
+            this.extract.Location = new System.Drawing.Point(143, 7);
+            this.extract.Name = "extract";
+            this.extract.Size = new System.Drawing.Size(75, 23);
+            this.extract.TabIndex = 5;
+            this.extract.Text = "Extract...";
+            this.extract.UseVisualStyleBackColor = true;
+            this.extract.Click += new System.EventHandler(this.extract_Click);
+            // 
             // splitchan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(225, 162);
+            this.ClientSize = new System.Drawing.Size(225, 168);
+            this.Controls.Add(this.extract);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.img_drop);
             this.Controls.Add(this.sound_drop);
@@ -111,6 +123,7 @@
         private System.Windows.Forms.Button sound_drop;
         private System.Windows.Forms.Button img_drop;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button extract;
     }
 }
 

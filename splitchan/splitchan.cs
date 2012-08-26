@@ -86,7 +86,7 @@ namespace splitchan {
                 } while (fs.Length < (maxSize - 1024));
                 byte[] taga = Encoding.ASCII.GetBytes(tag + '.' + id.ToString("D3"));
                 ushort counter = (ushort)(taga.Length + 9);
-                uint end = (uint)fs.Position - 1;
+                uint end = (uint)fs.Position - 1;  //this 1 will haunt me forever
                 fs.WriteByte((byte)taga.Length);
                 fs.Write(taga, 0, taga.Length);
                 fs.Write(BitConverter.GetBytes(start), 0, 4);
@@ -155,7 +155,7 @@ namespace splitchan {
         }
         public void OpenFile(bool isimage) {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = isimage ? "images (*.png,*.bmp,*.gif,*.jpg)|*.png;*.bmp;*.gif;*.jpg" : "sound(*.ogg)|*.ogg";
+            ofd.Filter = isimage ? "images (*.png,*.gif,*.jpg)|*.png;*.gif;*.jpg" : "sound(*.ogg)|*.ogg";
             ofd.FilterIndex = 0;
             if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                 if (isimage) {
@@ -174,6 +174,61 @@ namespace splitchan {
 
         private void img_drop_Click(object sender, EventArgs e) {
             OpenFile(true);
+        }
+
+        private void extract_Click(object sender, EventArgs e) {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "images (*.png,*.gif,*.jpg)|*.png;*.gif;*.jpg";
+            ofd.FilterIndex = 0;
+            ofd.Multiselect = true;
+            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+                var sfd = new SaveFileDialog();
+                sfd.Filter = "ogg (*.ogg)|*ogg";
+                sfd.FilterIndex = 0;
+                if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+                    var end = new char[] { '4', 'S', 'P', 'F' };
+                    var file = sfd.OpenFile();
+                    var files = sortfiles(ofd.FileNames);
+                    foreach (string f in files) {
+                        var fa = File.ReadAllBytes(f);
+                        bool match = true;
+                        for (int i = 0; i < 4; i++) {
+                            if (fa[fa.Length - 4 + i] != end[i]) {
+                                MessageBox.Show("not valid file: " + f);
+                                match = false;
+                            }
+
+                        }
+                        if (!match) break;
+                        var fstart = fa.Length - 6 - BitConverter.ToUInt16(fa, fa.Length - 6);
+                        byte taglen = fa[fstart];
+                        var start = BitConverter.ToUInt32(fa, fstart + taglen + 1);
+                        var endpos = BitConverter.ToUInt32(fa, fstart + taglen + 4 + 1);
+                        file.Write(fa, (int)start, (int)(endpos - start) + 1); //there I have it
+                    }
+                    file.Close();
+                }
+            }
+        }
+
+        private string[] sortfiles(string[] p) {
+            bool was = false;
+            do {
+                for (int i = 0; i < p.Length - 1; i++) {
+                    if (splitnum(p[i]) < splitnum(p[i + i])) {
+                        was = true;
+                        var b = p[i];
+                        p[i] = p[i + 1];
+                        p[i + 1] = b;
+                    }
+                }
+            } while (was);
+            return p;
+        }
+        private int splitnum(string file) {
+            var filename = Path.GetFileNameWithoutExtension(file);
+            var parts = filename.Split('.');
+            return Convert.ToInt32(parts[1]);
         }
     }
 }
