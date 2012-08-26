@@ -191,6 +191,8 @@ namespace splitchan {
                     var end = new char[] { '4', 'S', 'P', 'F' };
                     var file = sfd.OpenFile();
                     var files = sortfiles(ofd.FileNames);
+                    string tagname = "";
+                    Dictionary<string, Sound> parts = new Dictionary<string, Sound>();
                     foreach (string f in files) {
                         var fa = File.ReadAllBytes(f);
                         bool match = true;
@@ -204,9 +206,23 @@ namespace splitchan {
                         if (!match) break;
                         var fstart = fa.Length - 6 - BitConverter.ToUInt16(fa, fa.Length - 6);
                         byte taglen = fa[fstart];
+                        var tag = Encoding.ASCII.GetString(fa, fstart + 1, taglen);
                         var start = BitConverter.ToUInt32(fa, fstart + taglen + 1);
                         var endpos = BitConverter.ToUInt32(fa, fstart + taglen + 4 + 1);
-                        file.Write(fa, (int)start, (int)(endpos - start) + 1); //there I have it
+                        //file.Write(fa, (int)start, (int)(endpos - start) + 1); //there I have it
+                        var a = new Sound();
+                        a.data = new byte[(endpos - start) + 1];
+                        Array.Copy(fa, start, a.data, 0, a.data.Length);
+                        //a.tag = tag;
+                        //a.start = (int)start;
+                        // a.end = (int)endpos;
+                        parts.Add(tag, a);
+                        if (tagname == "")
+                            tagname = tag.Split('.')[0];
+                    }
+                    for (int i = 1; i < parts.Count+1; i++) {
+                        var data = parts[tagname + "." + i.ToString("D3")].data;
+                        file.Write(data, 0, data.Length);
                     }
                     file.Close();
                 }
@@ -231,6 +247,9 @@ namespace splitchan {
             var filename = Path.GetFileNameWithoutExtension(file);
             var parts = filename.Split('.');
             return Convert.ToInt32(parts[1]);
+        }
+        public struct Sound {
+            public byte[] data;
         }
     }
 }
