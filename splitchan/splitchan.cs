@@ -184,6 +184,8 @@ namespace splitchan {
             if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                 var sfd = new SaveFileDialog();
                 sfd.Filter = "ogg (*.ogg)|*ogg";
+                sfd.AddExtension = true;
+                sfd.DefaultExt = ".ogg";
                 sfd.FilterIndex = 0;
                 if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                     var end = new char[] { '4', 'S', 'P', 'F' };
