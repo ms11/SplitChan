@@ -9,3 +9,4 @@ You can embed bigger than 3MB sound files into images, the program will split th
 ####Usage:
 * The buttons can be used as drag and drop target. Clicking on them will show a file open dialog.
 * Saving the file will add the number of the file between the filename and the extension. (e.g.: saving it with `test.png`, the program will generate `test.001.png`, `test.002.png` etc.)
+* When posting you have to tag the images with the numbers as you see it on the files (e.g.: `[tag.001]`, `[tag.002]` etc.)
