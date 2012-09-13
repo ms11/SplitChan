@@ -86,7 +86,7 @@ namespace splitchan {
                 } while (fs.Length < (maxSize - 1024));
                 byte[] taga = Encoding.ASCII.GetBytes(tag + '.' + id.ToString("D3"));
                 ushort counter = (ushort)(taga.Length + 9);
-                uint end = (uint)fs.Position - 1;  //this 1 will haunt me forever
+                uint end = (uint)fs.Position;
                 fs.WriteByte((byte)taga.Length);
                 fs.Write(taga, 0, taga.Length);
                 fs.Write(BitConverter.GetBytes(start), 0, 4);
@@ -211,7 +211,7 @@ namespace splitchan {
                         var endpos = BitConverter.ToUInt32(fa, fstart + taglen + 4 + 1);
                         //file.Write(fa, (int)start, (int)(endpos - start) + 1); //there I have it
                         var a = new Sound();
-                        a.data = new byte[(endpos - start) + 1];
+                        a.data = new byte[(endpos - start)];
                         Array.Copy(fa, start, a.data, 0, a.data.Length);
                         //a.tag = tag;
                         //a.start = (int)start;
